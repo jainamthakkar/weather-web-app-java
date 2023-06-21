@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Weather Web App</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+	<style>
+		
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: conic-gradient(from -.5turn at bottom right, deeppink, cyan, rebeccapurple);
+			background-repeat: no-repeat;
+			height: 100vh;
+			width: 100vw;
+			color: aliceblue;
+			font-family: 'roboto', serif;
+			font-size: 1.3em;
+		}
+
+		.container {
+			background: conic-gradient(from 90deg at 50% 0%, #111, 50%, #222, #111);
+			border: 2px solid black;
+			border-radius: 30px;
+			min-height: 260px;
+			width: 550px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+		}
+
+		.container:hover {
+			box-shadow: 0px 8px 12px 0px rgb(196, 196, 196);
+		}
+
+		.heading {
+			margin: 30px;
+		}
+
+		.block {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: inherit;
+			height: auto;
+			padding: 10px;
+		}
+
+		#city {
+			border-style: none;
+			border: none;
+			margin: 20px;
+			/* border: 2px solid red; */
+			width: 60%;
+			padding: 8px;
+			border-radius: 5px;
+			background: #4d4d4d;
+			color: #ffffff;
+			font-size: 1.1rem;
+		}
+
+		.getbtn {
+			padding: 10px;
+			background: conic-gradient(from 90deg at bottom right, cyan, rebeccapurple);
+			border: 2px solid white;
+			border-radius: 15px;
+			color: white;
+			font-size: 1.3rem;
+			font-weight: 600;
+			cursor: pointer;
+		}
+
+		.getbtn:hover {
+			background: conic-gradient(from -90deg at 50% -25%, blue, blueviolet);
+			 border-radius: 4px; 
+			/* border: solid black; */
+		}
+
+		#weatherData {
+			/* border: 2px solid red; */
+			padding: 20px;
+			color: aqua;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="container">
+		<h1 class="heading">Weather Web App</h1>
+
+		<div class="block">
+			<!-- <label for="city">Enter City Name:</label> -->
+			<input type="text" id="city" name="city" placeholder="Enter city name">
+			<button onclick="getWeather()" class="getbtn">Get Weather</button>
+		</div>
+
+		<div id="weatherData"></div>
+	</div>
+	<script>
+
+		function getWeather() {
+			var city = document.getElementById("city").value;
+
+			// Make AJAX request to fetch weather data
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "weather?city=" + city, true);
+			xhr.onreadystatechange = function () {
+
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+
+						console.log("Response Text:", xhr.responseText);
+						var weatherData = JSON.parse(xhr.responseText);
+						console.log("Weather Data:", weatherData);
+
+						// Update weatherData element with the fetched data
+						var weatherDataElement = document.getElementById("weatherData");
+
+						weatherDataElement.innerHTML = "City: " + weatherData.name + ", " + weatherData.sys.country + "<br>";
+
+						weatherDataElement.innerHTML += "Temperature: " + weatherData.main.temp + " °C<br>";
+
+						weatherDataElement.innerHTML += "Weather: " + weatherData.weather[0].description + "<br><br>";
+
+						if (weatherData.main.temp > 40) {
+							weatherDataElement.innerHTML += "Ohhhh! It's too hot bro !! " + "<br>";
+						} else if (weatherData.main.temp < 20){
+							weatherDataElement.innerHTML += "Ohhhh! It feels like Cold !! " + "<br>";
+						} else{
+							weatherDataElement.innerHTML += "It feels like normal weather !!" + "<br>";
+						}
+					} else {
+						console.log("Request failed with status:", xhr.status);
+						weatherDataElement.innerHTML = "City not found !!<br>";
+					}
+				}
+			};
+			xhr.send();
+		}
+	</script>
+</body>
+
+</html>
