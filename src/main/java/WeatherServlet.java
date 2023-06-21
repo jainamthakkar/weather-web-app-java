@@ -21,7 +21,7 @@ public class WeatherServlet extends HttpServlet {
 
         if (city != null && !city.isEmpty()) {
             try {
-                String apiUrl = "https://api.openweathermap.org/data/2.5/weather?appid=ef4e6f91e7cfb7e9bf24fce6b856e0cf&units=metric&q=" + city;
+                String apiUrl = "https://api.openweathermap.org/data/2.5/weather?appid=&units=metric&q=" + city;
                 URL url = new URL(apiUrl);
                 Scanner scanner = new Scanner(url.openStream(), StandardCharsets.UTF_8.toString());
                 String jsonString = scanner.useDelimiter("\\A").next();
