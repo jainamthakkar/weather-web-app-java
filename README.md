@@ -1,1 +1,1 @@
-# weather-web-app-java
+# Weather Web App
